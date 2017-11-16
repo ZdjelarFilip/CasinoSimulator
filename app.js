@@ -1,7 +1,7 @@
-var koa = require('koa');
+var Koa = require('koa');
 var bodyParser = require('koa-bodyparser');
 
-var app = koa();
+var app = new koa();
 
 app.use(bodyParser());
 
