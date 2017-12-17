@@ -1,7 +1,7 @@
 import passport from 'koa-passport';
 import { Strategy as GoogleStrategy } from 'passport-google';
 
-import { User } from './db/data.js';
+import { User } from './db/data';
 
 //Passes User ID to application for session management
 passport.serializeUser((user, done) => {
