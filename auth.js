@@ -1,21 +1,30 @@
-var passport = require('koa-passport');
+import passport from 'koa-passport';
+import { Strategy as GoogleStrategy } from 'passport-google';
 
-var GoogleStrategy = require('passport-google').Strategy;
+import { User } from './db/data.js';
+
+//Passes User ID to application for session management
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+//Gets user data for a session
+passport.deserializeUser((id, done) => {
+    var user = await User.findById(id);
+    done(null, user);
+});
+
+
 
 passport.use(new GoogleStrategy({
-    returnURL: "http://localhost/auth/google/callback",
+    returnURL: "http://localhost/auth/google/return",
     realm: "http://localhost"
   },
   function(identifier, profile, done) {
 
-    (async ()  => {
-      profile.identifier = identifier;
-      return done(null, profile);
-    })();
-    /*process.nextTick(function() {
-
-      profile.identifier = identifier;
-      return done(null, profile);
-    })*/
+      (async ()  => {
+          var user = await User.findById(identifier);
+          return done(null, user);
+      })();
   }
 ));
