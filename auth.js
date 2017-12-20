@@ -1,7 +1,7 @@
 import passport from 'koa-passport';
-import { Strategy as GoogleStrategy } from 'passport-google';
+import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
 
-import { User } from './db/data';
+import User from './models/user';
 
 //Passes User ID to application for session management
 passport.serializeUser((user, done) => {
@@ -17,14 +17,23 @@ passport.deserializeUser((id, done) => {
 
 
 passport.use(new GoogleStrategy({
-	returnURL: "http://localhost/auth/google/return",
-	realm: "http://localhost"
+		clientID: GOOGLE_CLIENT_ID,
+		clientSecret: GOOGLE_CLIENT_SECRET,
+		callbackURL: "http://localhost/auth/google/callback",
   },
-  function(identifier, profile, done) {
-
+  function(accessToken, rereshToken, profile, done) {
 	  (async ()  => {
-		  var user = await User.findById(identifier);
-		  return done(null, user);
+			try {
+				var user = await User.findById(identifier);
+				return done(null, user);
+			}
+			catch (err) {
+				return done(err);
+			}
+
+
 	  })();
   }
 ));
+
+export default passport;
