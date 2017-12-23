@@ -7,12 +7,12 @@ var query = [
 
 export default class User {
 	//Constructs a User object
-	constructor(params) {
-		this.id = params.id;
-		this.googleToken = params.googleToken,
-		this.name = params.name;
-		this.email = params.email;
-		this.coins = params.coins;
+	constructor(id, googleToken,name, email, coins) {
+		this.id = id;
+		this.googleToken = googleToken,
+		this.name = name;
+		this.email = email;
+		this.coins = coins;
 	}
 
 
@@ -33,7 +33,7 @@ export default class User {
 		 	});
 		}
 		else {
-
+			return false;
 		}
 
 	  client.release();

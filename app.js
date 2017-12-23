@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import bodyParser from 'koa-body';
-import cookie from 'koa-cookie';
+import cookieParser from 'koa-cookie';
 import render from 'koa-ejs';
 
 import path from 'path';
@@ -10,8 +10,8 @@ import router from './routes';
 var app = new Koa();
 
 //Initialize rendering engine
-render(router, {
-  root: path.join(__dirname, 'view'),
+render(app, {
+  root: path.join(__dirname, 'views'),
   layout: 'template',
   viewExt: 'html',
   cache: false,
@@ -22,16 +22,16 @@ render(router, {
 //Error handling middleware
 app.use(async (next) {
    try {
-      await next;
+      await next();
    } catch (err) {
       ctx.status = err.status || 500;
       ctx.body = err.message;
    }
 });
 
-//Data parsing
+//Request body (POST data etc.) and cookies
 app.use(bodyParser());
-app.use(cookie());
+app.use(cookieParser());
 
 app.use(async (ctx, next) => {
 	// the parsed body will store in ctx.request.body
@@ -40,8 +40,9 @@ app.use(async (ctx, next) => {
 	await next();
 });
 
-//Here we insert all routes
+//URL routing
 app.use(router.routes());
 app.use(router.allowedMethods());
 
+//App listens on env PORT, or 3000 if PORT is undefined
 app.listen(process.env.PORT || 3000);

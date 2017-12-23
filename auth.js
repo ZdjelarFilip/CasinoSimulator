@@ -19,9 +19,9 @@ passport.deserializeUser((id, done) => {
 passport.use(new GoogleStrategy({
 		clientID: GOOGLE_CLIENT_ID,
 		clientSecret: GOOGLE_CLIENT_SECRET,
-		callbackURL: "http://localhost/auth/google/callback",
+		callbackURL: "http://localhost/auth/google/return",
   },
-  function(accessToken, rereshToken, profile, done) {
+  function(accessToken, refreshToken, profile, done) {
 	  (async ()  => {
 			try {
 				var user = await User.findById(identifier);
