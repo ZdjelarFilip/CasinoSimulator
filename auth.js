@@ -4,12 +4,12 @@ import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
 import User from './models/user';
 
 //Passes User ID to application for session management
-passport.serializeUser((user, done) => {
+passport.serializeUser(function (user, done) {
 	done(null, user.id);
 });
 
 //Gets user data for a session
-passport.deserializeUser((id, done) => {
+passport.deserializeUser(function (id, done) {
 	var user = await User.findById(id);
 	done(null, user);
 });
@@ -22,7 +22,7 @@ passport.use(new GoogleStrategy({
 		callbackURL: "http://localhost/auth/google/return",
   },
   function(accessToken, refreshToken, profile, done) {
-	  (async ()  => {
+	  (async function() {
 			try {
 				var user = await User.findById(identifier);
 				return done(null, user);
@@ -30,8 +30,6 @@ passport.use(new GoogleStrategy({
 			catch (err) {
 				return done(err);
 			}
-
-
 	  })();
   }
 ));

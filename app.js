@@ -20,7 +20,7 @@ render(app, {
 
 
 //Error handling middleware
-app.use(async (next) {
+app.use(async function (next) {
    try {
       await next();
    } catch (err) {
@@ -33,7 +33,7 @@ app.use(async (next) {
 app.use(bodyParser());
 app.use(cookieParser());
 
-app.use(async (ctx, next) => {
+app.use(async function (ctx, next) {
 	// the parsed body will store in ctx.request.body
 	// if nothing was parsed, body will be an empty object {}
 	ctx.body = ctx.request.body;

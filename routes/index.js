@@ -14,7 +14,7 @@ router.use(auth.session());
 router.use('/', home.routes(), home.allowedMethods());
 
 //Check user authentication
-app.use(async (ctx, next) {
+app.use(async function (ctx, next) {
 	//Pass execution to account routes if user is authenticated
   if (ctx.isAuthenticated()) {
     await next();

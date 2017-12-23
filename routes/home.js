@@ -3,11 +3,11 @@ import Router from 'koa-router';
 var router = new Router();
 
 
-router.get('/login', (ctx, next) => {
+router.get('/login', function (ctx, next) {
 	ctx.render('login');
 });
 
-router.get('/', (ctx, next) => {
+router.get('/', function (ctx, next) {
 	//Show a diferent page if user is logged in
 	if (ctx.isAuthenticated()) {
     await next();
