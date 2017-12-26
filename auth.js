@@ -3,13 +3,13 @@ import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
 
 import User from './models/user';
 
-//Passes User ID to application for session management
+// Passes User ID to application for session management
 passport.serializeUser(function (user, done) {
 	var sessionUser = { id: user.id, name: user.name, email: user.email, coins: user.coins };
 	done(null, sessionUser);
 });
 
-//Gets user data for a session
+// Gets user data for a session
 passport.deserializeUser(function (id, done) {
 	var user = await User.findById(id);
 	done(null, user);

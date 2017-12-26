@@ -6,6 +6,8 @@ var query = [
 	create: 'INSERT INTO User(id, googleToken, name) VALUES($1, $2, $3) RETURNING *'
 ];
 
+const STARTER_COINS = 50;
+
 export default class User {
 	//Constructs a User object
 	constructor(profile) {
@@ -17,7 +19,7 @@ export default class User {
 	}
 
 
-	//Finds a User based on their OAuth token
+	// Finds a User based on their OAuth token
 	static async findById(id) {
 
 	 	var client = await db.connect();

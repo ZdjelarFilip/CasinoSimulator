@@ -22,18 +22,18 @@ const sessionConfig = {
   rolling: true
 };
 
-//Initialize rendering engine
+// Initialize rendering engine
 render(app, {
   root: path.join(__dirname, 'views'),
-  layout: 'template',
+  layout: 'layout',
   viewExt: 'html',
   cache: false,
   debug: true
 });
 
 
-//Error handling
-app.use(async function (next) {
+// Error handling
+app.use(async function (ctx, next) {
    try {
       await next();
    } catch (err) {
@@ -42,31 +42,37 @@ app.use(async function (next) {
    }
 });
 
-//Request logging
+//Add title setter, cause koa-ejs is retarded
+app.use(async function (ctx, next) {
+  ctx.title = function(title) {
+    if (title == '') {
+      ctx.fullTitle = 'Coin Casino';
+    }
+    else {
+      ctx.fullTitle = title + ' - Coin Casino';
+    }
+  };
+});
+
+// Request logging
 app.use(logger());
 
 app.use(serve('./public'));
 
-//Request body (POST data etc.) and cookie parser
+// Request body (POST data etc.) and cookie parser
 app.use(bodyParser());
 app.use(cookieParser());
-app.use(async function (ctx, next) {
-	// the parsed body will store in ctx.request.body
-	// if nothing was parsed, body will be an empty object {}
-	ctx.body = ctx.request.body;
-	await next();
-});
 
-//Session
-app.use(session({sessionConfig, app));
+// Session
+app.use(session(sessionConfig, app));
 
 // //Passport initialization
 // app.use(passport.initialize());
 // app.use(passport.session());
 
-//URL routing
+// URL routing
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-//App listens on env PORT, or 3000 if PORT is undefined
+// App listens on env PORT, or 3000 if PORT is undefined
 app.listen(process.env.PORT || 3000);
