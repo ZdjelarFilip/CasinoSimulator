@@ -14,8 +14,8 @@
   "author": "jurep",
   "license": "GPL-3.0",
   "dependencies": {
-    "bcrypt": "^1.0.3",
-    "bcrypt-promise": "^2.0.0",
+    "bcrypt-nodejs": "0.0.3",
+    "bcrypt-nodejs-as-promised": "^1.0.4",
     "ejs": "^2.5.7",
     "koa": "^2.4.1",
     "koa-body": "^2.5.0",
